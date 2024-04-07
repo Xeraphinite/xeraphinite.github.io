@@ -31,36 +31,59 @@ const SongComponent: React.FC<SongProps> = ({ song }) => {
   return (
     <Card
       className={cn(
-        "flex flex-col",
-        "w-96",
-        "shadow-sm",
+        "md:flex",
+        "m-4 p-8 min-w-96 max-w-screen-2xl",
+        "border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60", // blur Effect
         "hover:shadow-md transition-shadow"
       )}
     >
+      <img
+        src={song.cover_art_url}
+        className={cn("w-40 rounded-xl", "md:w-52 md:h-52")}
+      />
       <CardHeader>
-        <CardTitle>{song.title}</CardTitle>
-        <div className={cn(
-          "flex item-center", "space-x-4"
-        )}>
+        <CardTitle className="my-2 font-bold">{song.title}</CardTitle>
+        <div className="my-4 space-x-2">
+          <Badge variant="default"> {song.genre} </Badge>
+          {song.tags?.map((tag) => (
+            <Badge variant="secondary"> {tag} </Badge>
+          ))}
+        </div>
+        <div className={cn("flex item-center", "space-x-4", "my-4", "py-6")}>
           {song.artists.map((artist) => (
-            <div className={cn("flex items-center", "space-x-2")}>
-              <Avatar>
-                <AvatarImage
-                  src={song.artists_avatar_url[song.artists.indexOf(artist)]}
-                />
-                <AvatarFallback>AT</AvatarFallback>
-              </Avatar>
-              <CardDescription>{artist}</CardDescription>
+            <div>
+              <div
+                className={cn(
+                  "hidden",
+                  "md:space-x-4 md:flex md:items-center",
+                  "my-4"
+                )}
+              >
+                <Avatar>
+                  <AvatarImage
+                    src={song.artists_avatar_url[song.artists.indexOf(artist)]}
+                  />
+                  <AvatarFallback>A</AvatarFallback>
+                </Avatar>
+                <CardDescription className="text-gray-700">
+                  {artist}
+                </CardDescription>
+              </div>
+              <div
+                className={cn("flex md:hidden items-center my-4")}
+              >
+                {artist},&nbsp;
+              </div>
             </div>
           ))}
         </div>
-        <CardDescription>{song.description}</CardDescription>
       </CardHeader>
       <CardContent>
-        <Badge> {song.genre} </Badge>
-        {song.tags?.map((tag) => (
-          <Badge variant="secondary"> {tag} </Badge>
-        ))}
+        <CardDescription
+          className={cn("text-md", "text-gray-800", "dark:text-gray-200")}
+        >
+          {song.description}
+        </CardDescription>
       </CardContent>
     </Card>
   );
