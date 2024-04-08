@@ -1,6 +1,7 @@
 import { Toggle } from "@/components/ui/toggle";
 import Image from "next/image";
 import SongComponent from "../components/SongComponents";
+import NavBar from "@/components/NavBar";
 
 const metadata = {
   title: "Song Title",
@@ -21,6 +22,8 @@ const metadata = {
 export default function Home() {
   return (
     <div>
+      <NavBar />
+      <SongComponent song={metadata} />
       <SongComponent song={metadata} />
       {/* <img src={"https://picsum.photos/1920/1080"} alt="placeholder" /> */}
     </div>

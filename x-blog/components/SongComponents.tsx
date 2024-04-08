@@ -1,13 +1,19 @@
 interface SongMetadata {
+  // song metadata
   title: string;
+  genre: string;
+  // artist metadata
   artists: string[];
   artists_avatar_url: string[];
-  cover_art_url: string;
-  description: string;
-  genre: string;
+  // album or reference metadata
   album?: string;
   release_year?: number;
+  cover_art_url: string;
+  // other metadata
+  description: string;
   tags?: string[];
+  listen_urls?: string[];
+  listen_data?: string[];
 }
 
 interface SongProps {
@@ -37,21 +43,44 @@ const SongComponent: React.FC<SongProps> = ({ song }) => {
         "hover:shadow-md transition-shadow"
       )}
     >
+      {/* Cover Art */}
       <img
         src={song.cover_art_url}
-        className={cn("w-40 rounded-xl", "md:w-52 md:h-52")}
+        alt={song.title}
+        className={cn(
+          "aspect-video rounded-xl",
+          "md:w-52 md:h-52",
+          "group-hover:scale-130 transition-transform duration-400 ease-in-out"
+        )}
       />
       <CardHeader>
-        <CardTitle className="my-2 font-bold">{song.title}</CardTitle>
+        <CardTitle className="my-2 font-bold">
+          {song.title}
+          <span className={cn("text-gray-400 text-sm")}> ({song.release_year}) </span>
+        </CardTitle>
+        {
+          song.album && (
+            <div className="flex items-center space-x-2">
+              <CardDescription className="text-gray-700">
+                {song.album}
+              </CardDescription>
+            </div>
+          )
+        }
+        {/* Genre and Tags */}
         <div className="my-4 space-x-2">
           <Badge variant="default"> {song.genre} </Badge>
-          {song.tags?.map((tag) => (
-            <Badge variant="secondary"> {tag} </Badge>
+          {song?.tags?.map((tag) => (
+            <Badge key={tag} variant="secondary">
+              {" "}
+              {tag}{" "}
+            </Badge>
           ))}
         </div>
-        <div className={cn("flex item-center", "space-x-4", "my-4", "py-6")}>
+        {/* Artists */}
+        <div className={cn("flex item-center", "space-x-4", "my-4", "py-2")}>
           {song.artists.map((artist) => (
-            <div>
+            <div key={artist}>
               <div
                 className={cn(
                   "hidden",
@@ -69,22 +98,16 @@ const SongComponent: React.FC<SongProps> = ({ song }) => {
                   {artist}
                 </CardDescription>
               </div>
-              <div
-                className={cn("flex md:hidden items-center my-4")}
-              >
-                {artist},&nbsp;
-              </div>
             </div>
           ))}
         </div>
-      </CardHeader>
-      <CardContent>
         <CardDescription
           className={cn("text-md", "text-gray-800", "dark:text-gray-200")}
         >
           {song.description}
         </CardDescription>
-      </CardContent>
+      </CardHeader>
+      <CardContent></CardContent>
     </Card>
   );
 };
